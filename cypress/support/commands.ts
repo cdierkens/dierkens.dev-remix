@@ -28,28 +28,7 @@ import "@testing-library/cypress/add-commands";
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
 
-interface SignInOptions {
-  email: string;
-  password: string;
-}
-
-Cypress.Commands.add("signIn", ({ email, password }: SignInOptions) => {
-  cy.session([email, password], () => {
-    cy.visit("/sign-in");
-
-    cy.findByLabelText("Email").type(email);
-    cy.findByLabelText("Password").type(password);
-    cy.findByRole("button", { name: "Sign In" }).click();
-
-    cy.url().should("eq", `${Cypress.config("baseUrl")}/`);
-  });
-});
-
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace Cypress {
-    interface Chainable {
-      signIn(options: SignInOptions): Chainable<void>;
-    }
-  }
+  namespace Cypress {}
 }

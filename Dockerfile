@@ -1,30 +1,33 @@
 # Production Dependencies
-FROM node:18.13.0 as dependencies
+FROM node:18.16.0 as dependencies
 WORKDIR /dependencies
 
 COPY package.json ./
-COPY yarn.lock ./
-COPY prisma/schema.prisma ./prisma/schema.prisma
+COPY pnpm-lock.yaml ./
 
-RUN yarn install --production --frozen-lockfile --prefer-offline
+RUN yarn global add pnpm
+
+RUN pnpm install --prod --frozen-lockfile
 
 # Production Build
-FROM node:18.13.0 as build
+FROM node:18.16.0 as build
 WORKDIR /build
 
-ARG NPM_TOKEN
-
 COPY package.json ./
-COPY yarn.lock ./
+COPY pnpm-lock.yaml ./
 
-RUN yarn install --frozen-lockfile --prefer-offline
+RUN yarn global add pnpm
+
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN yarn run build
+RUN pnpm run build
 
 # Application
-FROM node:18.13.0 as application
+FROM node:18.16.0 as application
+
+RUN yarn global add pnpm
 
 # Copy production dependencies
 COPY --from=dependencies /dependencies/package.json ./package.json
@@ -36,4 +39,4 @@ COPY --from=build /build/public ./public
 
 COPY ./server.js ./server.js
 
-ENTRYPOINT [ "yarn", "start" ]
+ENTRYPOINT [ "pnpm", "start" ]
