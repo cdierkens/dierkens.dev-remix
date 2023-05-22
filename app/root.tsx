@@ -23,16 +23,16 @@ export function links() {
 
 export default function App() {
   return (
-    <html lang="en" className="bg-base-200">
+    <html
+      lang="en"
+      className="bg-gradient-to-br from-primary-content to-bg-base-200 bg-no-repeat bg-fixed"
+    >
       <head>
         <Meta />
         <Links />
       </head>
       <body>
-        <main className="container mx-auto px-3 mt-3 flex-auto">
-          <Outlet />
-        </main>
-
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
