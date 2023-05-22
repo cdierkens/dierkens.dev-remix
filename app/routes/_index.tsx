@@ -5,7 +5,7 @@ export default function Index() {
         <div className="hero-content text-center">
           <h1>Remix Template</h1>
 
-          <p>Welcome to your remix app.</p>
+          <p>Welcome to your remix apppp.</p>
         </div>
       </div>
     </div>
